@@ -169,7 +169,7 @@ export async function verifyIdToken(options: {
   /**
    * Alternatively, you can provide the following environment variables:
    */
-  env?: {
+  env: {
     /**
      * Google Cloud project ID.
      */
@@ -178,7 +178,7 @@ export async function verifyIdToken(options: {
      * Google Cloud service account credentials.
      * @see https://cloud.google.com/iam/docs/creating-managing-service-account-keys
      */
-    GOOGLE_CLOUD_CREDENTIALS?: string;
+    GOOGLE_CLOUD_CREDENTIALS: string | Credentials;
   };
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   waitUntil?: (promise: Promise<any>) => void;
@@ -187,16 +187,9 @@ export async function verifyIdToken(options: {
     throw new TypeError(`Missing "idToken"`);
   }
 
-  let projectId = options?.projectId;
+  const credentials: Credentials = getCredentials(options.env.GOOGLE_CLOUD_CREDENTIALS);
 
-  if (projectId === undefined) {
-    projectId = options?.env?.GOOGLE_CLOUD_PROJECT;
-  }
-
-  if (projectId === undefined && options?.env?.GOOGLE_CLOUD_CREDENTIALS) {
-    const credentials = getCredentials(options.env.GOOGLE_CLOUD_CREDENTIALS);
-    projectId = credentials?.project_id;
-  }
+  let projectId = options?.projectId ?? options?.env?.GOOGLE_CLOUD_PROJECT ?? credentials?.project_id;
 
   if (projectId === undefined) {
     throw new TypeError(`Missing "projectId"`);
@@ -210,8 +203,8 @@ export async function verifyIdToken(options: {
   const header = decodeProtectedHeader(options.idToken);
   const now = Math.floor(Date.now() / 1000);
   const key = await importPublicKey({
-    keyId: header.kid as string,
-    certificateURL: "https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com", // prettier-ignore
+    keyId: credentials.private_key_id || header.kid as string,
+    certificateURL: credentials.client_x509_cert_url,
     waitUntil: options.waitUntil,
   });
 
