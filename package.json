@@ -9,6 +9,9 @@
     "email": "hello@kriasoft.com",
     "url": "https://github.com/kriasoft"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "contributors": [
     {
       "name": "Konstantin Tarkus",
@@ -26,7 +29,10 @@
       "url": "https://www.patreon.com/koistya"
     }
   ],
-  "repository": "github:kriasoft/web-auth-library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SDIjeremy/web-auth-library.git"
+  },
   "keywords": [
     "auth",
     "authentication",
