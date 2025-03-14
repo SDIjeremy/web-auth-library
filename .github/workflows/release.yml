@@ -20,7 +20,7 @@ jobs:
           node-version: 20.x
           registry-url: "https://npm.pkg.github.com"
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Clean dist directory
         run: rm -rf dist
       - name: Build
