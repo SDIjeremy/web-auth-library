@@ -153,4 +153,4 @@ Copyright © 2022-present Kriasoft. This source code is licensed under the MIT l
 and [contributors](https://github.com/kriasoft/web-auth-library/graphs/contributors).</sup>
 
 
-BUILD3
+BUILD4
