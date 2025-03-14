@@ -202,11 +202,14 @@ export async function verifyIdToken(options: {
   // Import the public key from the Google Cloud project
   const header = decodeProtectedHeader(options.idToken);
   const now = Math.floor(Date.now() / 1000);
+  console.log({ credentials: credentials });
   const key = await importPublicKey({
-    keyId: credentials.private_key_id || header.kid as string,
+    keyId: header.kid as string,
     certificateURL: credentials.client_x509_cert_url,
     waitUntil: options.waitUntil,
   });
+
+  console.log("before jwtVerify");
 
   const { payload } = await jwtVerify(options.idToken, key, {
     audience: projectId == null ? undefined : projectId,
@@ -216,6 +219,8 @@ export async function verifyIdToken(options: {
         : `https://securetoken.google.com/${projectId}`,
     maxTokenAge: "1h",
   });
+
+  console.log("before jwtClaim")
 
   if (!payload.sub) {
     throw new errors.JWTClaimValidationFailed(`Missing "sub" claim`, "sub");
@@ -227,6 +232,8 @@ export async function verifyIdToken(options: {
       "auth_time"
     );
   }
+
+  console.log({ payload });
 
   return payload as UserToken;
 }
