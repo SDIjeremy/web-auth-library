@@ -151,3 +151,6 @@ Copyright © 2022-present Kriasoft. This source code is licensed under the MIT l
 
 <sup>Made with ♥ by Konstantin Tarkus ([@koistya](https://twitter.com/koistya), [blog](https://medium.com/@koistya))
 and [contributors](https://github.com/kriasoft/web-auth-library/graphs/contributors).</sup>
+
+
+BUILD
