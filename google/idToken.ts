@@ -204,7 +204,7 @@ export async function verifyIdToken(options: {
   const now = Math.floor(Date.now() / 1000);
   console.log({ credentials: credentials });
   const key = await importPublicKey({
-    keyId: header.kid as string,
+    keyId: credentials.private_key_id ?? header.kid as string,
     certificateURL: credentials.client_x509_cert_url,
     waitUntil: options.waitUntil,
   });
